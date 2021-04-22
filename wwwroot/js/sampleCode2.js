@@ -30,20 +30,29 @@ getTasksAsync = async function () {
 
 
             const liItem = document.createElement('li');
-           
+
             liItem.dataset.id = data[i].id;
             liItem.innerHTML = 'Title:' + data[i].title;
             ulList.appendChild(liItem);
 
 
             const buttonDelete = document.createElement('button');
-            buttonDelete.id = data[i].title;
+            buttonDelete.id = data[i].id;
             buttonDelete.innerText = "Delete this task";
             liItem.appendChild(buttonDelete);
             let temp = liItem.dataset.id;
+            buttonDelete.setAttribute('class', 'btn');
             buttonDelete.addEventListener('click', () => deleteItemAsync(temp));
-        }
 
+            const buttonUpdate = document.createElement('button');
+            buttonUpdate.id = data[i].id;
+            buttonUpdate.innerText = "Change this task";
+            liItem.appendChild(buttonUpdate);
+            buttonUpdate.setAttribute('class', 'btn');
+            buttonUpdate.addEventListener('click', (temp, Item) => updateItemAsync(temp,Item));
+
+        }
+        
     }
 
 ////////////////////////////
@@ -95,12 +104,10 @@ insertItemAsync = function (item) {
 //DELETE
 deleteItemAsync = function (Id) {
 
-    return fetch('/api/todo/' + Id, {
+   return fetch('/api/todo/' + Id, {
         method: 'DELETE',
 
     });
-       
-
 }
 
 getItemAsync = function (Id) {
@@ -113,9 +120,11 @@ getItemAsync = function (Id) {
 
 
 }
-
+//////////////////////////
+//UPDATE
 updateItemAsync = function (Id, Item) {
-
+    var liItem = document.getElementsByTagName('li');
+    liItem.contentEditable = true;
     fetch('/api/todo/' + Id, {
 
         headers: { "Content-Type": "application/json; charset=utf-8" },
