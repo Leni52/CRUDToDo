@@ -98,17 +98,25 @@ insertItemAsync = function (item) {
             })
         })
             .then(res => res.json())
-            .then(data => showTasks(data));
+            .then(data => {
+                const dataArr = [];
+                dataArr.push(data);
+                showTasks(dataArr);
+              
+            });
+
+   
     }
 ///////////////////////////
 //DELETE
 deleteItemAsync = function (Id) {
 
-   return fetch('/api/todo/' + Id, {
+    fetch('/api/todo/' + Id, {
         method: 'DELETE',
 
-    });
-}
+    }).then(() => location.reload());
+        
+};
 
 getItemAsync = function (Id) {
 
@@ -124,7 +132,7 @@ getItemAsync = function (Id) {
 //UPDATE
 updateItemAsync = function (Id, Item) {
     var liItem = document.getElementsByTagName('li');
-    liItem.contentEditable = true;
+    //liItem.contentEditable = true;
     fetch('/api/todo/' + Id, {
 
         headers: { "Content-Type": "application/json; charset=utf-8" },
